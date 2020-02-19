@@ -15,15 +15,15 @@ function ontouchstart_handler(ev) {
 	// NB DE TOUCHES
 	// IDENTIFIANTS
 	// CANVAS DRAW ELLIPSE DE TOUCHE
+	showInfo('start', ev);
 	for (let i = 0 ; i < ev.changedTouches.length ; i++) {
-		showInfo('start', ev.changedTouches[i], '.changedTouches');
 		drawTouch(ev.changedTouches[i], 'rgba(0,0,255,0.8)')
 	}
 }
 function ontouchend_handler(ev) {
 	// LOG END
+	showInfo('end', ev);
 	for (let i = 0 ; i < ev.changedTouches.length ; i++) {
-		showInfo('end', ev.changedTouches[i], '.changedTouches');
 		drawTouch(ev.changedTouches[i], 'rgba(255,0,0,0.8)')
 	}
 }
@@ -32,22 +32,22 @@ function ontouchmove_handler(ev) {
 	// NB DE TOUCHES
 	// IDENTIFIANTS
 	// SI DEUX TOUCHES: DISTANCE ENTRE EUX EN PIXELS, COEFFICIENT DIRECTEUR
+	showInfo('move', ev);
 	for (let i = 0 ; i < ev.changedTouches.length ; i++) {
-		showInfo('move', ev.changedTouches[i], '.changedTouches');
 		drawTouch(ev.changedTouches[i], 'rgba(0,255,0,0.1)')
 	}
 }
 function ontouchcancel_handler(ev) {
 	// LOG CANCEL
+	showInfo('cancel', ev);
 	for (let i = 0 ; i < ev.changedTouches.length ; i++) {
-		showInfo('cancel', ev.changedTouches[i], '.changedTouches');
 		drawTouch(ev.changedTouches[i], 'rgba(255,255,0,0.8)')
 	}
 }
 
-function showInfo(handler, touch, type) {
+function showInfo(handler, ev) {
 	// Get touchDOM
-	let id = 'touch-' + handler + touch.identifier;
+	let id = 'touch-' + handler;
 	let touchDOM   = document.getElementById(id);
 	if (touchDOM === null) {
 		touchDOM	= document.createElement('div');
@@ -56,17 +56,27 @@ function showInfo(handler, touch, type) {
 	}
 	
 	// InnerHTML info
-	let pDOM = touchDOM.getElementsByClassName(type);
+	let pDOM = touchDOM.childNodes;
 	if (pDOM.length !== 0) {
 		pDOM[0].remove();
 	}
 	pDOM = document.createElement('p');
-	pDOM.setAttribute('class', type);
 	touchDOM.appendChild(pDOM);
-
-	pDOM.innerHTML = 	'id: ' + touch.identifier + ' - ' + '<br>' +
-						'client: ' + touch.clientX + ' ; ' + touch.clientY + '<br>' +
-						'radius: ' + touch.radiusX + ' ; ' + touch.radiusY + ' - rotation: ' + touch.rotationAngle + ' - force: ' + touch.force;
+	
+	let text = '';
+	for (let i = 0 ; i < ev.changedTouches.length ; i++) {
+		let touch = ev.changedTouches[i];
+		text += 'id: ' + touch.identifier + ' | ' + touch.clientX + ' ; ' + touch.clientY + '<br>'
+	}
+	if (ev.changedTouches.length === 2) {
+		let touchA = ev.changedTouches[0];
+		let touchB = ev.changedTouches[1];
+		let distance = Math.hypot(touchB.clientX - touchA.clientX, touchB.clientY - touchA.clientY);
+		let directorCoeff = (touchA.clientY - touchB.clientY) / (touchA.clientX - touchB.clientX);
+		text += 'distance: ' + distance + 'px' + ' | coeff: ' + directorCoeff;
+		
+	}
+	pDOM.innerHTML = text;
 }
 
 function drawTouch(touch, color) {
