@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, user-scalable=no"/>
+		
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<title>Mobile devices events</title>
+	</head>
+	
+	<body id="body">
+		<!--DIV ELEMENTS FOR EVENTS DISPLAY-->
+		<div id="touchInfo">
+			<h3>TOUCH START (blue)</h3>
+			<div id="start"></div>
+			<h3>TOUCH END (red)</h3>
+			<div id="end"></div>
+			<h3>TOUCH MOVE (green)</h3>
+			<div id="move"></div>
+			<h3>TOUCH CANCEL (yellow)</h3>
+			<div id="cancel"></div>
+		</div>
+		<canvas id="touchCanvas"></canvas>
+		
+		<!--JAVASCRIPT SOURCES-->
+		<script src="touchHandler.js"></script>
+	
+	</body>
+
+</html>
