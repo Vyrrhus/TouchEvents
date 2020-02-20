@@ -201,8 +201,9 @@ function resize() {
 	resizeCanvas(CANVAS);
 
 	function resizeCanvas(canvas) {
-		CANVAS.width = WIDTH;
-		CANVAS.height = HEIGHT;
+		CANVAS.width = WIDTH * DPR;
+		CANVAS.height = HEIGHT * DPR;
+		CONTEXT.scale(DPR, DPR);
 	}
 	
 	draw_circle(50,50,20,'rgba(255,255,0,0.3)');
