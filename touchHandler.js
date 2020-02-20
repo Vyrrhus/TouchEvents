@@ -6,6 +6,7 @@ var WIDTH		= document.getElementById('body').offsetWidth;
 var HEIGHT		= document.getElementById('body').offsetHeight;
 var CENTER_X	= Math.floor(WIDTH  / 2);
 var CENTER_Y	= Math.floor(HEIGHT / 2);
+var DPR			= window.devicePixelRatio;
 
 document.ontouchstart	= ontouchstart_handler;
 document.ontouchend		= ontouchend_handler;
@@ -203,6 +204,10 @@ function resize() {
 		CANVAS.width = WIDTH;
 		CANVAS.height = HEIGHT;
 	}
+	
+	draw_circle(50,50,20,'rgba(255,255,0,0.3)');
+	draw_circle(100,50,10,'rgba(0,255,255,0.3)');
+	draw_circle(50,100,5,'rgba(255,0,255,0.3)');
 }
 
 // ONLOAD EVENT
@@ -214,3 +219,17 @@ window.onload = function() {
 
 // ON CONSERVE UNIQUEMENT .changedTouches (pas .touches ni .targetTouches) car seul élément conservé par chaque event.
 // ON CONSERVE UNIQUEMENT .clientX .clientY.
+
+function draw_circle(x,y,r, color) {
+	CONTEXT.beginPath();
+	CONTEXT.arc(x, y, r, 0, PI2)
+	CONTEXT.fillStyle = color;
+	CONTEXT.fill();
+	CONTEXT.closePath()
+	
+	CONTEXT.font = '12px Arial';
+	CONTEXT.fillStyle = 'rgba(0,0,0,1)';
+	CONTEXT.textBaseline = 'middle';
+	CONTEXT.textAlign = 'center';
+	CONTEXT.fillText(r + 'px', x, y);
+}
